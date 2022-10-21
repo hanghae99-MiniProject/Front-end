@@ -11,7 +11,7 @@ export default function MovieInfo({ movieInfo, isSmall=false }){
     <div className='moveInfoWrap'>
       <h2>{movieInfo.title}</h2>
       <hr />
-      <span className='star'>★★★★★ <span>★★★★★</span> </span> <span>|</span>
+      <span className='star'>★★★★★<span>★★★★★</span> </span> <span>|</span>
       <span>{movieInfo.genre}</span> <span>|</span>
       <span>{movieInfo.releaseDate}</span>
       <hr />
