@@ -1,34 +1,34 @@
 import { DivMovieInfoSection } from './style';
+import commentIcon from '../../image/comment.svg';
 
-export default function MovieInfo({ movieInfo, isSmall = false }) {
+export default function MovieInfo({ movieInfo, children, isSmall = false }) {
   const PERFECT_STAR = 5;
-  const space = isSmall ? 0 : 20;
-  const keys = new Array(movieInfo.cast.length)
-    .fill(1)
-    .map((key, index) => (key = index + 1));
 
+  const space = isSmall ? 0 : 15;
+
+  console.log(movieInfo);
   return (
     <DivMovieInfoSection
       isSmall={isSmall}
-      star={(movieInfo.star / PERFECT_STAR) * 100}
+      star={(movieInfo.star / PERFECT_STAR) * 100 + '%'}
     >
-      <img src={movieInfo.posterUrl} />
+      <img src={movieInfo.image} className='posterImg' alt={movieInfo.title} />
 
       <div className='moveInfoWrap'>
-        <h2>{movieInfo.title}</h2>
+        <h2>{movieInfo.movieTitle}</h2>
+        <h4>{movieInfo.genre}</h4>
         <hr />
         <span className='star'>
           ★★★★★<span>★★★★★</span>
-        </span>{' '}
+        </span>
         <span>|</span>
-        <span>{movieInfo.genre}</span> <span>|</span>
-        <span>{movieInfo.releaseDate}</span>
+        <span>❤ 1234</span> <span>|</span>{' '}
+        <span>
+          <img src={commentIcon} className='iconImg' /> 123
+        </span>
         <hr />
         <div style={{ height: space }}></div>
-        <h3>Cast</h3>
-        {movieInfo.cast.map((actorName, index) => (
-          <span key={keys[index]}>{actorName}</span>
-        ))}
+        {isSmall ? <a></a> : <div className='children'>{children}</div>}
       </div>
     </DivMovieInfoSection>
   );
