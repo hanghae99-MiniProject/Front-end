@@ -30,11 +30,12 @@ export const DivHeaderSection = styled.div`
     position: relative;
     
     img{
-      height: 12vh;
-      min-height: 80px;
+      height: 8vh;
+      min-height: 50px;
       position: absolute;
       right: 0;
       bottom: 0;
+      margin-bottom: 10px;
     }
   }
   .menuBox{
@@ -43,6 +44,7 @@ export const DivHeaderSection = styled.div`
     h2{
       position: absolute;
       margin-left: 20px;
+      margin-bottom: 10px;
       bottom: 0;
     }
   }
@@ -52,6 +54,7 @@ export const DivHeaderSection = styled.div`
     height: 100%;
     position: relative;
     h2{
+      margin-bottom: 10px;
       position: absolute;
       bottom: 0;
     }
