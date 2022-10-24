@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 export const DivMovieInfoSection = styled.div`
   min-width: 454px;
-  min-height: 250px;
-  height: ${props => props.isSmall? '250px' : '70vh'};
+  max-width: 850px;
+  min-height: ${props => props.isSmall? '250px' : '370px'};
+  height: ${props => props.isSmall? '250px' : '500px'};
+  
   margin: auto;
 
   background-color: rgba(0, 0, 0, 0.7);
@@ -12,22 +14,28 @@ export const DivMovieInfoSection = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: ${props => props.isSmall ? 'flex-end' : 'flex-start'};
 
-  img{
-      min-height: 250px;
-      max-height: 500px;
+  h2{
+    margin-top: 5px;
+  }
+
+  .posterImg{
       height: 100%;
-      align-content: stretch;
-
       border-radius: 15px;
     }
 
   .moveInfoWrap{
-    min-width: 454px;
-    width: 30%;
-    margin: 10px;
-    color: #cccccc;
+    min-height: 150px;
+    width: 454px;
     
+    margin: 0px 10px;
+    color: #fff;
+    
+    .iconImg{
+      width: 15px;
+    }
+
     span{
       margin-right: 15px;
     }
@@ -41,11 +49,11 @@ export const DivMovieInfoSection = styled.div`
       position: relative;
 
       span{
+        width: ${props => props.star};
+        overflow: hidden;
         position: absolute;
-        width: ${props => props.star}%;
         left: 0px;
         color: red;
-        overflow: hidden;
       }
     }
   }
