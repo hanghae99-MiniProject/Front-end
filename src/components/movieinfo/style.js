@@ -8,7 +8,7 @@ export const DivMovieInfoSection = styled.div`
 
   margin: auto;
 
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: #343438; */
 
   display: flex;
   flex-direction: row;
@@ -30,7 +30,7 @@ export const DivMovieInfoSection = styled.div`
     width: 454px;
 
     margin: 0px 10px;
-    color: black;
+    color: #fff;
 
     .iconImg {
       width: 15px;

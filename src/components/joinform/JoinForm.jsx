@@ -1,6 +1,8 @@
 import { DivJoinBox } from './style'
 import { useState } from 'react'
 import useInput from '../../hook/useInput';
+import axios from 'axios';
+import { useCookies } from 'react-cookie'
 
 export default function JoinForm(){
   const [ memberName, setMemberName ] = useInput('');
