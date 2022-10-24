@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { addMoviesWriteThunk } from '../redux/modules/writeSlice';
@@ -9,7 +10,7 @@ import { addMoviesWriteThunk } from '../redux/modules/writeSlice';
 
 const Write = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const onClickHandler = (event) => {
     event.preventDefault();
 
@@ -42,6 +43,8 @@ const Write = () => {
       reviewTitle: '',
       reviewContent: '',
     });
+
+    navigate('/review')
   };
 
   const [data, setData] = useState({
