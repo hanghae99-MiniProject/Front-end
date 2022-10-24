@@ -49,15 +49,17 @@ export default function JoinForm(){
   // 
   // qwer1234
   const join = () => {
-    if(!(checkMemberName() && checkPassword() && checkPasswordConfirm())) return;
+    // if(!(checkMemberName() && checkPassword() && checkPasswordConfirm())) return;
     
-    const memberInfo = {
-      memberName: memberName,
-      password: password,
-      passwordConfirm: passwordConfirm
-    }
-    console.log(memberInfo)
-    axios.post('http://43.201.55.251/api/member/signup', memberInfo)
+    // const memberInfo = {
+    //   memberName: memberName,
+    //   password: password,
+    //   passwordConfirm: passwordConfirm
+    // }
+    // console.log(memberInfo)
+    // axios.post('http://43.201.55.251:8080/api/member/signup', memberInfo)
+    
+    
 
     // const memberInfo = {
     //   memberName: memberName,
@@ -68,11 +70,15 @@ export default function JoinForm(){
     // axios.post('https://week3-board.herokuapp.com/member', memberInfo)
 
     
-    // const temp = {
-    //   memberName: "test1234",
-    //   password: "aaaa@1234"
-    // }
-    // axios.post('http://43.201.55.251/api/member/login', temp)
+    const temp = {
+      memberName: "minjoo",
+      password: "qwer1234"
+    }
+    const temp1 = axios.post('http://43.201.55.251:8080/api/member/login', temp)
+    .then((res) => {
+      console.log(res.request.getAllResponseHeaders())
+    })
+    // console.log(temp1)
     
     // 정민님네 서버
     // const temp = {
