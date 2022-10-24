@@ -2,17 +2,15 @@ import { DivMovieInfoSection } from './style';
 import commentIcon from '../../image/comment.svg';
 
 export default function MovieInfo({ movieInfo, children, isSmall = false }) {
-  const PERFECT_STAR = 5;
-
+  const PERFECT_RATING = 5;
   const space = isSmall ? 0 : 15;
 
-  console.log(movieInfo);
   return (
     <DivMovieInfoSection
       isSmall={isSmall}
-      star={(movieInfo.star / PERFECT_STAR) * 100 + '%'}
+      star={(movieInfo.rating / PERFECT_RATING) * 100 + '%'}
     >
-      <img src={movieInfo.image} className='posterImg' alt={movieInfo.title} />
+      <img src={movieInfo.image} className='posterImg' />
 
       <div className='moveInfoWrap'>
         <h2>{movieInfo.movieTitle}</h2>
