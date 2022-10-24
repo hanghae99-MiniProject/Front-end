@@ -18,8 +18,11 @@ export const DivThumbBox = styled.div`
     color: #fff;
     
     img{
+      min-width: 200px;
+      max-width: 350px;
       width: 100%;
       height: 100%;
+      
       object-fit: cover;
      }
   }

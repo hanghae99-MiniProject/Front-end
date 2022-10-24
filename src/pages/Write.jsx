@@ -11,7 +11,7 @@ const Write = () => {
   const dispatch = useDispatch();
 
   const onClickHandler = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
 
     if (
       data.image.trim() === '' ||
