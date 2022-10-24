@@ -3,6 +3,7 @@ import { useState } from 'react'
 import useInput from '../../hook/useInput';
 import axios from 'axios';
 import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom';
 
 export default function JoinForm(){
   const [ memberName, setMemberName ] = useInput('');
@@ -11,6 +12,7 @@ export default function JoinForm(){
   const [ idMsg, setIdMsg ] = useState('');
   const [ pwMsg, setPwMsg ] = useState('');
 
+  const navigate = useNavigate();
   const checkMemberName = () => {
     const exp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
     const result = exp.test(memberName)
@@ -43,10 +45,62 @@ export default function JoinForm(){
     return result;
   }
 
+  const [ cookie, setCookie, removeCookie ] = useCookies();
+  // 
+  // qwer1234
   const join = () => {
     if(!(checkMemberName() && checkPassword() && checkPasswordConfirm())) return;
-    // 서버로 Login 요청할 예정
-    console.log('가입')
+    
+    const memberInfo = {
+      memberName: memberName,
+      password: password,
+      passwordConfirm: passwordConfirm
+    }
+    console.log(memberInfo)
+    axios.post('http://43.201.55.251/api/member/signup', memberInfo)
+
+    // const memberInfo = {
+    //   memberName: memberName,
+    //   password: password,
+    //   passwordConfirm: passwordConfirm
+    // }
+    // console.log(memberInfo)
+    // axios.post('https://week3-board.herokuapp.com/member', memberInfo)
+
+    
+    // const temp = {
+    //   memberName: "test1234",
+    //   password: "aaaa@1234"
+    // }
+    // axios.post('http://43.201.55.251/api/member/login', temp)
+    
+    // 정민님네 서버
+    // const temp = {
+    //   nickname: "rolety2202@naver.com",
+    //   password: "135456!a"
+    // }
+    // axios.post('http://54.180.141.164/api/member/login', temp)
+
+
+    // axios.defaults.headers.post['withCredentials'] = true;
+    // axios.post('http://43.201.55.251/api/member/signup', { proxy: {
+    //   protocol: 'http',
+    //   host: '43.201.55.251',
+      // hostname: '127.0.0.1' // Takes precedence over 'host' if both are defined
+      // port: 8080,
+      // withCredentials: true
+      // auth: {
+      //   username: 'minjoo',
+      //   password: 'qwer1234'
+      // }
+    // }, data: memberInfo
+  // })
+  //   .then(res => {
+  //     alert('회원가입완료');
+  //     navigate('/login');
+  //   })
+
+
   }
 
   return <DivJoinBox>
