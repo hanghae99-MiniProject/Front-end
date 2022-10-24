@@ -11,7 +11,7 @@ import {
 
 const Detail = () => {
   const { id } = useParams();
-
+  
   const dispatch = useDispatch();
 
   const searchMovies = useSelector((state) => state.writeSlice.searchMovies);
@@ -60,7 +60,8 @@ const Detail = () => {
 
   return (
     <div>
-      <div>
+      <MovieInfo movieInfo={searchMovies} isSmall={true} />
+      <div style={{width:650, margin:'auto'}}>
         {isEditMode ? (
           <>
             리뷰제목:
@@ -105,7 +106,7 @@ const Detail = () => {
             </button>
           </div>
         ) : (
-          <div>
+          <div style={{textAlign:'center'}}>
             <button
               size='large'
               onClick={() => {
