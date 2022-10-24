@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react'
 import ReviewInfo from "../components/reviewinfo/ReviewInfo"
 
 export default function Main(){
-  const TEST_ID = '2';
+  const TEST_ID = '4';
   const [ review, setReview ] = useState();
   const [ isLoading, setIsLoading ] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://week3-board.herokuapp.com/review/${TEST_ID}`)
+    axios.get(`https://week3-board.herokuapp.com/review/${TEST_ID}`)
     .then(res => {
       setReview(res.data)
       setIsLoading(false)
