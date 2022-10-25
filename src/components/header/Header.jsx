@@ -14,7 +14,7 @@ export default function Header(){
   
   return <DivHeaderSection>
           <div className="headerWrap">
-            <div className='logoBox'><img src={logo} className='logo' /></div>
+            <div className='logoBox'><a href='/'><img src={logo} className='logo' /></a></div>
             <div className='menuBox'><a href='/review'><h2>Review</h2></a></div>
             <div className='loginBox'>{cookie.token ? <a href='/login' onClick={logout}><h2>Logout</h2></a> : <a href='/login'><h2>Login</h2></a>}</div>
           </div>
