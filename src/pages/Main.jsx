@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import ReviewInfo from "../components/reviewinfo/ReviewInfo"
 import { useCookies } from "react-cookie";
 import Loading from "../components/loading/Loading";
+import styled from "styled-components";
 
 export default function Main(){
   // const TEST_ID = '4';
@@ -29,6 +30,13 @@ export default function Main(){
     return <Loading />
   } else {
     {console.log('render-false')}
-    return <ReviewInfo review={review}/>
+    return <><DivTitle><h1>BEST REVIEW ✨</h1></DivTitle><ReviewInfo review={review}/></>
   }
 }
+
+const DivTitle = styled.div`
+  min-width: 454px;
+  max-width: 820px;
+  width: 80vw;
+  margin: auto;
+`
