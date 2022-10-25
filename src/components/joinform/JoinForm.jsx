@@ -2,30 +2,44 @@ import { DivJoinBox } from './style'
 import { useState } from 'react'
 import useInput from '../../hook/useInput';
 import axios from 'axios';
-import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
 
 export default function JoinForm(){
+
+  const navigate = useNavigate();
+  
   const [ memberName, setMemberName ] = useInput('');
   const [ password, setPassword ] = useInput('');
   const [ passwordConfirm, setPasswordConfirm ] = useInput('');
+  const [isMemberNameCheck, setIsMemberNameCheck] = useState(false)
+
   const [ idMsg, setIdMsg ] = useState('');
   const [ pwMsg, setPwMsg ] = useState('');
-
-  const navigate = useNavigate();
+  
   const checkMemberName = () => {
     const exp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
     const result = exp.test(memberName)
 
-    if(result) {
-      setIdMsg('');
-      // 서버로 중복체크요청, 중복일 경우 메세지 출력 후 result false로 return
+    if(!result){
+      setIdMsg('2-10자 길이 영문/숫자/특수문자(._-) 사용 가능');
+      setIsMemberNameCheck(false)
+      return result;
     }
-    else setIdMsg('2-10자 길이 영문/숫자/특수문자(._-) 사용 가능');
-    
-    return result;
-  }
 
+    const temp = { memberName: memberName }
+    axios.post('http://43.201.55.251:8080/api/member/id-check', temp)
+    .then(res => {
+      console.log(res.data)
+      if(res.data.success){
+        setIdMsg('')
+        setIsMemberNameCheck(true)
+      } else {
+        setIdMsg(res.data.error.message)
+        setIsMemberNameCheck(false)
+      }
+    })
+  }
+  
   const checkPassword = () => {
     const exp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
     const result = exp.test(password)
@@ -45,67 +59,20 @@ export default function JoinForm(){
     return result;
   }
 
-  const [ cookie, setCookie, removeCookie ] = useCookies();
-  // 
-  // qwer1234
   const join = () => {
-    // if(!(checkMemberName() && checkPassword() && checkPasswordConfirm())) return;
+    if(!( isMemberNameCheck && checkPassword() && checkPasswordConfirm())) return;
     
-    // const memberInfo = {
-    //   memberName: memberName,
-    //   password: password,
-    //   passwordConfirm: passwordConfirm
-    // }
-    // console.log(memberInfo)
-    // axios.post('http://43.201.55.251:8080/api/member/signup', memberInfo)
-    
-    
-
-    // const memberInfo = {
-    //   memberName: memberName,
-    //   password: password,
-    //   passwordConfirm: passwordConfirm
-    // }
-    // console.log(memberInfo)
-    // axios.post('https://week3-board.herokuapp.com/member', memberInfo)
-
-    
-    const temp = {
-      memberName: "minjoo",
-      password: "qwer1234"
+    const joinInfo = {
+      memberName: memberName,
+      password: password,
+      passwordConfirm: passwordConfirm
     }
-    const temp1 = axios.post('http://43.201.55.251:8080/api/member/login', temp)
+
+    axios.post('http://43.201.55.251:8080/api/member/signup', joinInfo)
     .then((res) => {
-      console.log(res.request.getAllResponseHeaders())
+      alert(res.data.data)
+      navigate('/login')
     })
-    // console.log(temp1)
-    
-    // 정민님네 서버
-    // const temp = {
-    //   nickname: "rolety2202@naver.com",
-    //   password: "135456!a"
-    // }
-    // axios.post('http://54.180.141.164/api/member/login', temp)
-
-
-    // axios.defaults.headers.post['withCredentials'] = true;
-    // axios.post('http://43.201.55.251/api/member/signup', { proxy: {
-    //   protocol: 'http',
-    //   host: '43.201.55.251',
-      // hostname: '127.0.0.1' // Takes precedence over 'host' if both are defined
-      // port: 8080,
-      // withCredentials: true
-      // auth: {
-      //   username: 'minjoo',
-      //   password: 'qwer1234'
-      // }
-    // }, data: memberInfo
-  // })
-  //   .then(res => {
-  //     alert('회원가입완료');
-  //     navigate('/login');
-  //   })
-
 
   }
 
@@ -122,11 +89,11 @@ export default function JoinForm(){
     <div className='inputBox'>
       <h3>PASSWORD</h3>
       <p>{pwMsg}</p>
-      <input type='text' onChange={setPassword} onBlur={checkPassword}/>
+      <input type='password' onChange={setPassword} onBlur={checkPassword}/>
     </div>
     <div className='inputBox'>
       <h3>PASSWORD CONFIRM</h3>
-      <input type='text' onChange={setPasswordConfirm} onBlur={checkPasswordConfirm}/>
+      <input type='password' onChange={setPasswordConfirm} onBlur={checkPasswordConfirm}/>
     </div>
     <div className='buttonBox'>
       <a href='#' onClick={join}>JOIN</a>
