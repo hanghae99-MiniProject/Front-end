@@ -40,11 +40,18 @@ export default function LoginForm(){
 
     axios.post('http://43.201.55.251:8080/api/member/login', loginInfo)
     .then((res) => {
-      setCookie('token', res.request.getResponseHeader('authorization'))
-      navigate('/')
+      if(res.data.success){
+        setCookie('token', res.request.getResponseHeader('authorization'))
+        setCookie('refreshtoken', res.request.getResponseHeader('refresh-token'))
+        navigate('/')
+      } else {
+        alert(res.data.error.message)
+      }
+
     })
     .catch((err) =>{
-      alert(err.data.error.message)
+      console.log(err)
+      // 여유있을 때 에러 메세지 추가
     })
   }
 

@@ -70,8 +70,13 @@ export default function JoinForm(){
 
     axios.post('http://43.201.55.251:8080/api/member/signup', joinInfo)
     .then((res) => {
-      alert(res.data.data)
-      navigate('/login')
+      if(res.data.success){
+        alert(res.data.data)
+        navigate('/login')
+      } else {
+        alert(res.data.error.message)
+      }
+
     })
 
   }
