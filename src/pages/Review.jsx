@@ -7,10 +7,13 @@ export default function Review(){
   const [ isLoading, setIsLoading ] = useState(true);
   
   useEffect(() => {
-    axios.get('http://week3-board.herokuapp.com/review') 
+    axios.get('http://43.201.55.251:8080/api/reviews') 
     .then(res => {
-      setReviews(res.data) 
-      setIsLoading(false)
+      if(res.data.success) {
+        console.log(res.data)
+        setReviews(res.data.data) 
+        setIsLoading(false)
+      }
     })
   }, [])
   
