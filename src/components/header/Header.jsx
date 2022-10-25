@@ -1,14 +1,17 @@
 import { DivHeaderSection } from './style'
 import logo from '../../image/logo.png'
 import { useCookies } from 'react-cookie'
+import axios from 'axios';
 
 export default function Header(){
   const [cookie, setCookie, removeCookie ] = useCookies();
 
   const logout = () => {
     removeCookie('token')
+    axios.defaults.headers.post['authorization'] = cookie.token;
+    axios.post('http://43.201.55.251:8080/api/member/logout')
   }
-
+  
   return <DivHeaderSection>
           <div className="headerWrap">
             <div className='logoBox'><img src={logo} className='logo' /></div>
