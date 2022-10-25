@@ -14,8 +14,6 @@ export default function Main(){
     axios.get('http://43.201.55.251:8080/api/top-heart')
     .then(res => {
       setReview(res.data)
-      axios.defaults.headers.get['authorization'] = cookie.token;
-      axios.defaults.headers.get['refresh-token'] = cookie.refreshtoken;
       axios.get(`http://43.201.55.251:8080/api/reviews/${res.data}`)    
       .then(res => {
         if(res.data.success){
