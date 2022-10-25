@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
+const MAX_HEIGHT = '150px';
+const MARGIN_BOTTOM = '50px';
+
 export const DivHeaderSection = styled.div`
+
   width: 100vw;
-  height: 15vh;
+  height: ${MAX_HEIGHT};
   min-height: 80px;
   background: linear-gradient(#000000, rgba(0, 0, 0, 0));
   
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: ${MARGIN_BOTTOM};
 
   a{
     color: white;
@@ -16,7 +21,7 @@ export const DivHeaderSection = styled.div`
 
   .headerWrap{
     width:100%;
-    height: 15vh;
+    height: ${MAX_HEIGHT};
     color: white;
 
     display: flex;
@@ -26,7 +31,7 @@ export const DivHeaderSection = styled.div`
 
   .logoBox{
     width: 30vw;
-    height: 15vh;
+    height: ${MAX_HEIGHT};
     position: relative;
     
     img{
