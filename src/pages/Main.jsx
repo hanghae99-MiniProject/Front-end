@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState, useEffect } from 'react'
 import ReviewInfo from "../components/reviewinfo/ReviewInfo"
 import { useCookies } from "react-cookie";
+import Loading from "../components/loading/Loading";
 
 export default function Main(){
   // const TEST_ID = '4';
@@ -27,7 +28,7 @@ export default function Main(){
   
   if(isLoading){
     {console.log('render-true')}
-    return <h1>Loding</h1>
+    return <Loading />
   } else {
     {console.log('render-false')}
     return <ReviewInfo review={review}/>

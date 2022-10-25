@@ -1,6 +1,7 @@
 import ReviewList from "../components/reviewlist/ReviewList"
 import axios from "axios"
 import { useEffect, useState } from 'react'
+import Loading from "../components/loading/Loading";
 
 export default function Review(){
   const [ reviews, setReviews ] = useState([]);
@@ -19,7 +20,7 @@ export default function Review(){
   
   console.log(reviews)
   if(isLoading){
-    return <h1>LOADING</h1>
+    return <Loading />
   } else {
     return <ReviewList width='100%' reviews={reviews} />
   }
