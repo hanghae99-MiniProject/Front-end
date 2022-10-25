@@ -10,7 +10,6 @@ export default function Main(){
   const [ cookie, setCookie, removeCookie ] = useCookies();
   const [ review, setReview ] = useState();
   const [ isLoading, setIsLoading ] = useState(true);
-
   useEffect(() => {
     axios.get('http://43.201.55.251:8080/api/top-heart')
     .then(res => {
@@ -20,9 +19,11 @@ export default function Main(){
         if(res.data.success){
           setReview(res.data.data)
           setIsLoading(false)
+        } else {
+          alert(res.data.error.message)
         }
       })      
-    })    
+    })
   }, [])
   
   if(isLoading){
