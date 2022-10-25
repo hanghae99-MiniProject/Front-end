@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+//http://week3-board.herokuapp.com/review/
 
+//http://43.201.55.251:8080/api/reviews/
 export const getMoviesWriteThunk = createAsyncThunk(
   'GET_MOVIES',
   async (payload, thunkAPI) => {
     try {
       const { data } = await axios.get(
-        `http://week3-board.herokuapp.com/review/${payload}`
+        `http://43.201.55.251:8080/api/reviews/${payload}`
       );
 
       return thunkAPI.fulfillWithValue(data);
@@ -21,7 +23,7 @@ export const addMoviesWriteThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { data } = await axios.post(
-        'http://week3-board.herokuapp.com/review',
+        'http://43.201.55.251:8080/api/reviews/',
         payload
       );
 
@@ -37,7 +39,7 @@ export const updateMoviesWriteThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.patch(
-        `http://week3-board.herokuapp.com/review/${payload}`,
+        `http://43.201.55.251:8080/api/reviews/${payload.id}`,
         payload
       );
       console.log(data);
@@ -53,7 +55,7 @@ export const deleteMoviesWriteThunk = createAsyncThunk(
   'DELETE_MOVIES',
   async (payload, thunkAPI) => {
     try {
-      await axios.delete(`http://week3-board.herokuapp.com/review/${payload}`);
+      await axios.delete(`http://43.201.55.251:8080/api/reviews/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
@@ -105,8 +107,6 @@ const writeSlice = createSlice({
     [updateMoviesWriteThunk.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.searchMovies = action.payload;
-
-      console.log(state, action);
     },
     [updateMoviesWriteThunk.rejected]: (state, action) => {
       state.isLoading = false;
@@ -115,12 +115,12 @@ const writeSlice = createSlice({
 
     //delete
     [deleteMoviesWriteThunk.fulfilled]: (state, action) => {
+      console.log(state, action);
       const target = state.searchMovies.findIndex(
         (data) => data.id === action.payload
       );
-
-      state.searchMovies.splice(target, 1);
-      console.log(state, action);
+      state.searchMovies.splice(target, 1, action.payload);
+      console.log(action.payload);
     },
     [deleteMoviesWriteThunk.pending]: (state) => {
       state.isLoading = true;
