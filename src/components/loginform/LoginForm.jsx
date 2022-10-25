@@ -1,14 +1,21 @@
 import { DivLoginBox } from './style'
 import { useState } from 'react'
 import useInput from '../../hook/useInput';
+import { useCookies } from 'react-cookie'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm(){
+  const [ cookie, setCookie, removeCookie ] = useCookies();
+  const navigate = useNavigate();
+
   const [ memberName, setMemberName ] = useInput('');
   const [ password, setPassword ] = useInput('');
   const [ idMsg, setIdMsg ] = useState('');
   const [ pwMsg, setPwMsg ] = useState('');
-
+  
   const checkMemberNameBlank = () => {
+    
     const result = memberName.trim().length > 0;
     if(result) setIdMsg('');
     else setIdMsg('ID를 입력해주세요.');
@@ -26,7 +33,19 @@ export default function LoginForm(){
 
   const login = () => {
     if(!(checkMemberNameBlank() && checkPasswordBlank())) return;
-    // 서버로 Login 요청할 예정
+    const loginInfo = {
+      memberName: memberName,
+      password: password,
+    }
+
+    axios.post('http://43.201.55.251:8080/api/member/login', loginInfo)
+    .then((res) => {
+      setCookie('token', res.request.getResponseHeader('authorization'))
+      navigate('/')
+    })
+    .catch((err) =>{
+      alert(err.data.error.message)
+    })
   }
 
   return <DivLoginBox>
@@ -40,7 +59,7 @@ export default function LoginForm(){
     </div>
     <div className='inputBox'>
       <h3>PASSWORD<span>{pwMsg}</span></h3>
-      <input type='text' onChange={setPassword} onBlur={checkPasswordBlank}/>
+      <input type='password' onChange={setPassword} onBlur={checkPasswordBlank}/>
     </div>
     <div className='buttonBox'>
       <a href='#' onClick={login}>LOGIN</a>
