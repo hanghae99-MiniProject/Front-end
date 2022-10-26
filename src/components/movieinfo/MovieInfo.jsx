@@ -8,13 +8,13 @@ export default function MovieInfo({ movieInfo, children, isSmall = false }) {
   return (
     <DivMovieInfoSection
       isSmall={isSmall}
-      star={(movieInfo.rating / PERFECT_RATING) * 100 + '%'}
+      star={(movieInfo?.rating / PERFECT_RATING) * 100 + '%'}
     >
-      <img src={movieInfo.image} className='posterImg' />
+      <img src={movieInfo?.image} className='posterImg' />
 
       <div className='moveInfoWrap'>
-        <h2>{movieInfo.movieTitle}</h2>
-        <h4>{movieInfo.genre}</h4>
+        <h2>{movieInfo?.movieTitle}</h2>
+        <h4>{movieInfo?.genre}</h4>
         <hr />
         <span className='star'>
           ★★★★★<span>★★★★★</span>
