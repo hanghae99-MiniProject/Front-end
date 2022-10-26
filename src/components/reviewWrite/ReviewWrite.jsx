@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { addMoviesWriteThunk } from '../../redux/modules/writeSlice';
-
+import Loading from '../loading/Loading';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
 import { API_URL } from '../../shared/Request.jsx';
+
 
 const ReviewWrite = () => {
   const [cookie, setCookie, removeCookie] = useCookies();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [ isLoading, setIsLoading ] = useState(false);
+  
   const onClickHandler = (event) => {
     event.preventDefault();
 
@@ -39,7 +41,7 @@ const ReviewWrite = () => {
     //     refreshtoken: cookie.refreshtoken,
     //   })
     // );
-
+    setIsLoading(true)
     axios.defaults.headers.post['authorization'] = cookie.token;
     axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
     axios.post(`${API_URL}/api/reviews`, {
@@ -49,7 +51,23 @@ const ReviewWrite = () => {
       genre: data.genre,
       reviewTitle: data.reviewTitle,
       reviewContent: data.reviewContent,
-    });
+    })
+    .then(res => {
+      if(res.data.success) {
+        alert('리뷰가 작성되었습니다.');
+        navigate('/review');
+        setIsLoading(false)
+      } else {
+        alert('작성에 실패하였습니다.');
+        navigate('/review');
+        setIsLoading(false)
+      }
+    })
+    .catch(err => {
+      alert('작성에 실패하였습니다.');
+      navigate('/review');
+      setIsLoading(false)
+    })
 
     setData({
       image: '',
@@ -60,7 +78,7 @@ const ReviewWrite = () => {
       reviewContent: '',
     });
 
-    navigate('/review');
+    
   };
 
   const [data, setData] = useState({
@@ -74,9 +92,11 @@ const ReviewWrite = () => {
 
   const changhandle = (event) => {
     const { name, value } = event.target;
-
     setData({ ...data, [name]: value });
   };
+
+  if(isLoading) return <Loading />
+  
   return (
     <WriteFrom onSubmit={onClickHandler}>
       <WriteFormContainer>
