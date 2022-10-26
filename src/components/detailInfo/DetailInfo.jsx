@@ -10,16 +10,19 @@ import {
 import MovieInfo from '../movieinfo/MovieInfo';
 import Loading from '../loading/Loading'; // ADD
 import Comment from '../comment/Comment';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const DetailInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { isLoading, error } = useSelector((state) => state.writeSlice); // ADD
+  const [ cookie, setCookie, removeCookie ] = useCookies();
 
   const searchMovies = useSelector(
     (state) => state?.writeSlice?.searchMovies.data
   );
-  console.log('디테일', searchMovies);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [updatedReview, setUpdatedReview] = useState({
@@ -40,20 +43,28 @@ const DetailInfo = () => {
         ...searchMovies,
         reviewTitle: updatedReview.reviewTitle,
         reviewContent: updatedReview.reviewContent,
+        authorization: cookie.token,
+        refreshtoken: cookie.refreshtoken        
       })
     );
     setIsEditMode(false);
+    navigate('/review');
   };
   //삭제버튼
   const onDeleteHandler = () => {
-    dispatch(deleteMoviesWriteThunk(id));
-    console.log('삭제id', id);
+    dispatch(
+      deleteMoviesWriteThunk({reviewId: id,
+        authorization: cookie.token,
+        refreshtoken: cookie.refreshtoken
+      }));
   };
 
   //useEffect
   useEffect(() => {
-    dispatch(getMoviesWriteThunk(id));
-  }, [dispatch, id]);
+    dispatch(getMoviesWriteThunk({reviewId: id,
+      authorization: cookie.token,
+      refreshtoken: cookie.refreshtoken}));
+  }, [dispatch]);
 
   useEffect(() => {
     setUpdatedReview({

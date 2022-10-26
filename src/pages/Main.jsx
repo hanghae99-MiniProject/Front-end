@@ -8,8 +8,12 @@ import { API_URL } from "../shared/Request";
 
 export default function Main(){
   const [ review, setReview ] = useState();
+  const [ cookie, setCookie, removeCookie ] = useCookies();
   const [ isLoading, setIsLoading ] = useState(true);
+
   useEffect(() => {
+    axios.defaults.headers.get['authorization'] = cookie.token;
+    axios.defaults.headers.get['refresh-token'] = cookie.refreshtoken;
     axios.get(`${API_URL}/api/top-heart`)
     .then(res => {
       setReview(res.data)
@@ -26,10 +30,8 @@ export default function Main(){
   }, [])
   
   if(isLoading){
-    {console.log('render-true')}
     return <Loading />
   } else {
-    {console.log('render-false')}
     return <><DivTitle><h1>BEST REVIEW ✨</h1></DivTitle><ReviewInfo review={review}/></>
   }
 }

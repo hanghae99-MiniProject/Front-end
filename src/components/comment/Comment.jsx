@@ -99,10 +99,16 @@ const CommentLine = ({reviewId, content}) => {
     })
   }
 
+  if(localStorage.getItem('memberName') === content.memberName) {
+    return <CommentsBox>
+    <IdText>{content.memberName}</IdText>
+    { isEdit ? <input type='text' defaultValue={content.comment} onChange={editCommentHandler} /> : <CommentText>{content.comment}</CommentText> }
+    { isEdit ? <Btn onClick={saveOnClickHandler}>저장</Btn> : <Btn onClick={() => {setIsEdit(true)}}>수정</Btn>}
+    <Btn onClick={deleteOnClickHandler}> 삭제 </Btn>
+</CommentsBox>
+  }
   return <CommentsBox>
       <IdText>{content.memberName}</IdText>
-      { isEdit ? <input type='text' defaultValue={content.comment} onChange={editCommentHandler} /> : <CommentText>{content.comment}</CommentText> }
-      { isEdit ? <Btn onClick={saveOnClickHandler}>저장</Btn> : <Btn onClick={() => {setIsEdit(true)}}>수정</Btn>}
-      <Btn onClick={deleteOnClickHandler}> 삭제 </Btn>
+      <CommentText>{content.comment}</CommentText>
   </CommentsBox>
 }
