@@ -1,27 +1,26 @@
+import { useEffect } from 'react'
+import { getReviewsThunk } from "../redux/modules/writeSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import ReviewList from "../components/reviewlist/ReviewList"
-import axios from "axios"
-import { useEffect, useState } from 'react'
+import Loading from "../components/loading/Loading";
 
 export default function Review(){
-  const [ reviews, setReviews ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(true);
-  
+
+  const dispatch = useDispatch();
+  const { isLoading, error, searchMovies } = useSelector(state => state.writeSlice);
+
   useEffect(() => {
-    axios.get('http://43.201.55.251:8080/api/reviews') 
-    .then(res => {
-      if(res.data.success) {
-        console.log(res.data)
-        setReviews(res.data.data) 
-        setIsLoading(false)
-      }
-    })
-  }, [])
-  
-  console.log(reviews)
-  if(isLoading){
-    return <h1>LOADING</h1>
-  } else {
-    return <ReviewList width='100%' reviews={reviews} />
-  }
+    dispatch(getReviewsThunk());
+  }, [dispatch])
+
+  if(isLoading || searchMovies.length <= 0)
+    return <Loading />
+
+  if(error)
+    return <h1>Error</h1>
+
+  return <ReviewList width='100%' reviews={searchMovies.data} />
+
 
 }

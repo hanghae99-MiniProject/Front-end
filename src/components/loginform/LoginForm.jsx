@@ -15,11 +15,9 @@ export default function LoginForm(){
   const [ pwMsg, setPwMsg ] = useState('');
   
   const checkMemberNameBlank = () => {
-    
     const result = memberName.trim().length > 0;
     if(result) setIdMsg('');
     else setIdMsg('ID를 입력해주세요.');
-    
     return result;
   }
 
@@ -27,7 +25,6 @@ export default function LoginForm(){
     const result = password.trim().length > 0;
     if(result) setPwMsg('');
     else setPwMsg('비밀번호를 입력해주세요.');
-
     return result;
   }
 
@@ -47,11 +44,6 @@ export default function LoginForm(){
       } else {
         alert(res.data.error.message)
       }
-
-    })
-    .catch((err) =>{
-      console.log(err)
-      // 여유있을 때 에러 메세지 추가
     })
   }
 

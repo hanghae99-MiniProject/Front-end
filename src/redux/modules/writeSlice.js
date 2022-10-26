@@ -3,6 +3,8 @@ import axios from 'axios';
 //http://week3-board.herokuapp.com/review/
 
 //http://43.201.55.251:8080/api/reviews/
+
+
 export const getMoviesWriteThunk = createAsyncThunk(
   'GET_MOVIES',
   async (payload, thunkAPI) => {
@@ -62,6 +64,19 @@ export const deleteMoviesWriteThunk = createAsyncThunk(
     }
   }
 );
+
+// /api/reviews/
+export const getReviewsThunk = createAsyncThunk(
+  'GET_REVIEWS',
+  async (payload, thunkAPI) => {
+      try{
+        const { data } = await axios.get('http://43.201.55.251:8080/api/reviews/');
+        return thunkAPI.fulfillWithValue(data);
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+  }
+)
 
 const initialState = {
   searchMovies: [],
@@ -126,6 +141,20 @@ const writeSlice = createSlice({
       state.isLoading = true;
     },
     [deleteMoviesWriteThunk.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    // api/reviews
+    [getReviewsThunk.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log(action.payload)
+      state.searchMovies = action.payload;
+    },
+    [getReviewsThunk.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getReviewsThunk.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
