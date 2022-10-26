@@ -4,17 +4,16 @@ import ReviewInfo from "../components/reviewinfo/ReviewInfo"
 import { useCookies } from "react-cookie";
 import Loading from "../components/loading/Loading";
 import styled from "styled-components";
+import { API_URL } from "../shared/Request";
 
 export default function Main(){
-  // const TEST_ID = '4';
-  const [ cookie, setCookie, removeCookie ] = useCookies();
   const [ review, setReview ] = useState();
   const [ isLoading, setIsLoading ] = useState(true);
   useEffect(() => {
-    axios.get('http://43.201.55.251:8080/api/top-heart')
+    axios.get(`${API_URL}/api/top-heart`)
     .then(res => {
       setReview(res.data)
-      axios.get(`http://43.201.55.251:8080/api/reviews/${res.data}`)    
+      axios.get(`${API_URL}/api/reviews/${res.data}`)    
       .then(res => {
         if(res.data.success){
           setReview(res.data.data)

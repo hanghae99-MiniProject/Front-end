@@ -4,6 +4,7 @@ import useInput from '../../hook/useInput';
 import { useCookies } from 'react-cookie'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../shared/Request';
 
 export default function LoginForm(){
   const [ cookie, setCookie, removeCookie ] = useCookies();
@@ -35,7 +36,7 @@ export default function LoginForm(){
       password: password,
     }
 
-    axios.post('http://43.201.55.251:8080/api/member/login', loginInfo)
+    axios.post(`${API_URL}/api/member/login`, loginInfo)
     .then((res) => {
       if(res.data.success){
         setCookie('token', res.request.getResponseHeader('authorization'))

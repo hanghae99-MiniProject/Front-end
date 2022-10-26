@@ -3,6 +3,7 @@ import { useState } from 'react'
 import useInput from '../../hook/useInput';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../shared/Request';
 
 export default function JoinForm(){
 
@@ -27,7 +28,7 @@ export default function JoinForm(){
     }
 
     const temp = { memberName: memberName }
-    axios.post('http://43.201.55.251:8080/api/member/id-check', temp)
+    axios.post(`${API_URL}/api/member/id-check`, temp)
     .then(res => {
       console.log(res.data)
       if(res.data.success){
@@ -68,7 +69,7 @@ export default function JoinForm(){
       passwordConfirm: passwordConfirm
     }
 
-    axios.post('http://43.201.55.251:8080/api/member/signup', joinInfo)
+    axios.post(`${API_URL}/api/member/signup`, joinInfo)
     .then((res) => {
       if(res.data.success){
         alert(res.data.data)
