@@ -1,14 +1,15 @@
-import { DivLoginBox } from './style'
-import { useState } from 'react'
-import useInput from '../../hook/useInput';
-import { useCookies } from 'react-cookie'
 import axios from 'axios';
+import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
+
+import useInput from '../../hook/useInput';
 import { API_URL } from '../../shared/Request';
+import { DivLoginBox } from './style'
 
 export default function LoginForm(){
-  const [ cookie, setCookie, removeCookie ] = useCookies();
   const navigate = useNavigate();
+  const [ cookie, setCookie, removeCookie ] = useCookies();
 
   const [ memberName, setMemberName ] = useInput('');
   const [ password, setPassword ] = useInput('');
@@ -39,11 +40,13 @@ export default function LoginForm(){
     axios.post(`${API_URL}/api/member/login`, loginInfo)
     .then((res) => {
       if(res.data.success){
-        setCookie('token', res.request.getResponseHeader('authorization'))
-        setCookie('refreshtoken', res.request.getResponseHeader('refresh-token'))
-        navigate('/')
+        console.log(res.data.data.memberName)
+        setCookie('token', res.request.getResponseHeader('authorization'));
+        setCookie('refreshtoken', res.request.getResponseHeader('refresh-token'));
+        localStorage.setItem('memberName', res.data.data.memberName);
+        navigate('/');
       } else {
-        alert(res.data.error.message)
+        alert(res.data.error.message);
       }
     })
   }
