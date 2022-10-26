@@ -35,11 +35,14 @@ const ReviewWrite = () => {
     //     genre: data.genre,
     //     reviewTitle: data.reviewTitle,
     //     reviewContent: data.reviewContent,
+    //     authorization: cookie.token,
+    //     refreshtoken: cookie.refreshtoken,
     //   })
     // );
 
     axios.defaults.headers.post['authorization'] = cookie.token;
-    axios.post(`${API_URL}/reviews`, {
+    axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
+    axios.post(`${API_URL}/api/reviews`, {
       image: data.image,
       movieTitle: data.movieTitle,
       rating: data.rating,

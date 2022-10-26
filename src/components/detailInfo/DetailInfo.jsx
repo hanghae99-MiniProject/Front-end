@@ -8,13 +8,13 @@ import {
   updateMoviesWriteThunk,
 } from '../../redux/modules/writeSlice';
 import MovieInfo from '../movieinfo/MovieInfo';
-import Loading from '../loading/Loading';   // ADD
+import Loading from '../loading/Loading'; // ADD
 import Comment from '../comment/Comment';
 
 const DetailInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const {isLoading, error} = useSelector(state => state.writeSlice)  // ADD
+  const { isLoading, error } = useSelector((state) => state.writeSlice); // ADD
 
   const searchMovies = useSelector(
     (state) => state?.writeSlice?.searchMovies.data
@@ -62,15 +62,15 @@ const DetailInfo = () => {
     });
   }, [searchMovies]);
 
-  // ADD --- 
-  if(isLoading || !searchMovies){          
-    return <Loading />
+  // ADD ---
+  if (isLoading || !searchMovies) {
+    return <Loading />;
   }
-  if(error){
-    alert(error)
-    return <Loading />
+  if (error) {
+    alert(error);
+    return <Loading />;
   }
-  // ------ 
+  // ------
   return (
     <DetailContainer>
       <MovieInfo movieInfo={searchMovies} isSmall={true} />
@@ -134,7 +134,10 @@ const DetailInfo = () => {
           </div>
         )}
       </div>
-      <Comment reviewId={searchMovies.reviewId} commentList={searchMovies.commentResponseDtoList}/>
+      <Comment
+        reviewId={searchMovies.reviewId}
+        commentList={searchMovies.commentResponseDtoList}
+      />
     </DetailContainer>
   );
 };
@@ -147,7 +150,6 @@ const DetailContainer = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
   display: flex;
   flex-direction: column;
 `;
