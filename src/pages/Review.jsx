@@ -5,13 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import ReviewList from "../components/reviewlist/ReviewList"
 import Loading from "../components/loading/Loading";
 
+import { useCookies } from 'react-cookie';
+
 export default function Review(){
 
   const dispatch = useDispatch();
   const { isLoading, error, searchMovies } = useSelector(state => state.writeSlice);
+  const [ cookie, setCookie, removeCookie ] = useCookies();
 
   useEffect(() => {
-    dispatch(getReviewsThunk());
+    dispatch(getReviewsThunk({'token':cookie.token, 'refresh-token':cookie.refreshtoken}));
   }, [dispatch])
 
   if(isLoading || searchMovies.length <= 0)
