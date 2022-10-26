@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { API_URL } from '../../shared/Request';
 import {
   Btn,
   CommentsBox,
@@ -13,13 +13,18 @@ import {
   CommentBox,
 } from './style';
 import { Input } from './style';
-
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
 // component data => dispatch => 미들웨어 =>  reducer => store에 저장
 
-const Comment = (reviewId, commentList) => {
+export default function Comment({ reviewId, commentList }) {
+  console.log(commentList);
   const [state, setState] = useState('');
   const [comment, setComment] = useState('');
+  const [comments, setComments] = useState(Array.from(commentList));
   const dispatch = useDispatch();
+
+  const [cookie, setCookie, removeCookie] = useCookies();
 
   const onChangeHandler = (e) => {
     setState(e.target.value);
@@ -27,13 +32,24 @@ const Comment = (reviewId, commentList) => {
   };
 
   const onSubmitHandler = () => {
-    //dispatch(__postComment(state));
-    // setComment([...Comment, { reviewId: comment.length + 1, comment: state }]);
-    console.log('서브밋', state);
+    if (state.trim().length <= 0) {
+      alert('댓글을 작성해주세요.');
+      return;
+    }
+    axios.defaults.headers.post['authorization'] = cookie.token;
+    axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
+    console.log(reviewId);
+    axios.post(`${API_URL}/api/comments`, {
+      reviewId: Number(reviewId),
+      comment: state,
+    });
   };
 
-  const deleteOnClickHandler = () => {
-    // dispatch(__deleteComment());
+  const deleteOnClickHandler = (id) => {
+    axios.defaults.headers.delete['authorization'] = cookie.token;
+    axios.defaults.headers.delete['refresh-token'] = cookie.refreshtoken;
+    console.log(reviewId);
+    axios.delete(`${API_URL}/api/comment/${id}`);
   };
 
   return (
@@ -49,18 +65,23 @@ const Comment = (reviewId, commentList) => {
           <Input type="text" onChange={onChangeHandler} />
           <InputBtn>확인</InputBtn>
         </CommnetsInputBox>
-        {commentList.map((comment) => {})}
-        <CommentsBox>
-          <IdText>1</IdText>
-          <CommentText>ㄹㄹㄹ</CommentText>
-          <Btn>수정</Btn>
-          <Btn onClick={deleteOnClickHandler}>삭제</Btn>
-        </CommentsBox>
+        {comments?.map((comment) => {
+          <CommentsBox>
+            <IdText>{comment.memberName}</IdText>
+            <CommentText>{comment.comment}</CommentText>
+            <Btn>수정</Btn>
+            <Btn
+              onClick={() => {
+                deleteOnClickHandler(comment.commentId);
+              }}
+            >
+              삭제
+            </Btn>
+          </CommentsBox>;
+        })}
       </CommentsDiv>
     </CommentBox>
   );
-};
-
-export default Comment;
+}
 
 //
