@@ -6,6 +6,7 @@ import { addMoviesWriteThunk } from '../../redux/modules/writeSlice';
 
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { API_URL } from '../../shared/Request.jsx';
 
 const ReviewWrite = () => {
   const [cookie, setCookie, removeCookie] = useCookies();
@@ -38,7 +39,7 @@ const ReviewWrite = () => {
     // );
 
     axios.defaults.headers.post['authorization'] = cookie.token;
-    axios.post('http://43.201.55.251:8080/reviews', {
+    axios.post(`${API_URL}/reviews`, {
       image: data.image,
       movieTitle: data.movieTitle,
       rating: data.rating,

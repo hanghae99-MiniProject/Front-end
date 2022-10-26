@@ -1,17 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_URL } from '../../shared/Request.jsx';
 //http://week3-board.herokuapp.com/review/
 
 //http://43.201.55.251:8080/api/reviews/
 
-
 export const getMoviesWriteThunk = createAsyncThunk(
   'GET_MOVIES',
   async (payload, thunkAPI) => {
+    const refreshtoken = payload.refreshtoken;
+    const authorization = payload.authorization;
+    const body = {
+      image: payload.image,
+      movieTitle: payload.movieTitle,
+      rating: payload.rating,
+      genre: payload.genre,
+      reviewTitle: payload.reviewTitle,
+      reviewContent: payload.reviewContent,
+    };
+    axios.defaults.headers.get['authorization'] = authorization;
+    axios.defaults.headers.get['refresh-token'] = refreshtoken;
     try {
-      const { data } = await axios.get(
-        `http://43.201.55.251:8080/api/reviews/${payload}`
-      );
+      const { data } = await axios.get(`${API_URL}/api/reviews/${payload}`);
 
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
@@ -23,11 +33,20 @@ export const getMoviesWriteThunk = createAsyncThunk(
 export const addMoviesWriteThunk = createAsyncThunk(
   'ADD_MOVIES',
   async (payload, thunkAPI) => {
+    const refreshtoken = payload.refreshtoken;
+    const authorization = payload.authorization;
+    const body = {
+      image: payload.image,
+      movieTitle: payload.movieTitle,
+      rating: payload.rating,
+      genre: payload.genre,
+      reviewTitle: payload.reviewTitle,
+      reviewContent: payload.reviewContent,
+    };
+    axios.defaults.headers.post['authorization'] = authorization;
+    axios.defaults.headers.post['refresh-token'] = refreshtoken;
     try {
-      const { data } = await axios.post(
-        'http://43.201.55.251:8080/api/reviews/',
-        payload
-      );
+      const { data } = await axios.post(`${API_URL}`, payload);
 
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
@@ -41,7 +60,7 @@ export const updateMoviesWriteThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.patch(
-        `http://43.201.55.251:8080/api/reviews/${payload.id}`,
+        `${API_URL}/api/reviews/${payload.id}`,
         payload
       );
       console.log(data);
@@ -57,7 +76,7 @@ export const deleteMoviesWriteThunk = createAsyncThunk(
   'DELETE_MOVIES',
   async (payload, thunkAPI) => {
     try {
-      await axios.delete(`http://43.201.55.251:8080/api/reviews/${payload}`);
+      await axios.delete(`${API_URL}/api/reviews/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
@@ -69,14 +88,17 @@ export const deleteMoviesWriteThunk = createAsyncThunk(
 export const getReviewsThunk = createAsyncThunk(
   'GET_REVIEWS',
   async (payload, thunkAPI) => {
-      try{
-        const { data } = await axios.get('http://43.201.55.251:8080/api/reviews/');
-        return thunkAPI.fulfillWithValue(data);
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error);
-      }
+    console.log(payload);
+    try {
+      axios.defaults.headers.get['authorization'] = payload.token;
+      axios.defaults.headers.get['refresh-token'] = payload.refreshtoken;
+      const { data } = await axios.get(`${API_URL}/api/reviews/`);
+      return thunkAPI.fulfillWithValue(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-)
+);
 
 const initialState = {
   searchMovies: [],
@@ -148,7 +170,7 @@ const writeSlice = createSlice({
     // api/reviews
     [getReviewsThunk.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log(action.payload)
+      console.log(action.payload);
       state.searchMovies = action.payload;
     },
     [getReviewsThunk.pending]: (state) => {
