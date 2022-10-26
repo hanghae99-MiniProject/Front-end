@@ -9,7 +9,9 @@ export const getMoviesWriteThunk = createAsyncThunk(
   'GET_MOVIES',
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get(`${API_URL}/api/reviews/${payload}`);
+      axios.defaults.headers.get['authorization'] = payload.authorization;
+      axios.defaults.headers.get['refresh-token'] = payload.refreshtoken;
+      const { data } = await axios.get(`${API_URL}/api/reviews/${payload.reviewId}`);
 
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
@@ -33,9 +35,6 @@ export const addMoviesWriteThunk = createAsyncThunk(
     // };
     // axios.defaults.headers.post['authorization'] = authorization;
     // axios.defaults.headers.post['refresh-token'] = refreshtoken;
-
-    // console.log('get', payload);
-    // console.log('getbody', body);
     try {
       const { data } = await axios.post(`${API_URL}`, payload);
 
@@ -49,15 +48,12 @@ export const addMoviesWriteThunk = createAsyncThunk(
 export const updateMoviesWriteThunk = createAsyncThunk(
   'PATCH_MOVIES',
   async (payload, thunkAPI) => {
-    const refreshtoken = payload.refreshtoken;
-    const authorization = payload.authorization;
-
-    axios.defaults.headers.put['authorization'] = authorization;
-    axios.defaults.headers.put['refresh-token'] = refreshtoken;
-
+    axios.defaults.headers.put['authorization'] = payload.authorization;
+    axios.defaults.headers.put['refresh-token'] = payload.refreshtoken;
+    console.log(payload)
     try {
       const data = await axios.put(
-        `${API_URL}/api/reviews/${payload.id}`,
+        `${API_URL}/api/reviews/${payload.reviewId}`,
         payload
       );
       console.log(data);
@@ -72,14 +68,12 @@ export const updateMoviesWriteThunk = createAsyncThunk(
 export const deleteMoviesWriteThunk = createAsyncThunk(
   'DELETE_MOVIES',
   async (payload, thunkAPI) => {
-    const refreshtoken = payload.refreshtoken;
-    const authorization = payload.authorization;
-
-    axios.defaults.headers.delete['authorization'] = authorization;
-    axios.defaults.headers.delete['refresh-token'] = refreshtoken;
-
+    console.log(payload)
+    axios.defaults.headers.delete['authorization'] = payload.authorization;
+    axios.defaults.headers.delete['refresh-token'] = payload.refreshtoken;
+    console.log(payload.reviewId)
     try {
-      await axios.delete(`${API_URL}/api/reviews/${payload.id}`);
+      await axios.delete(`${API_URL}/api/reviews/${payload.reviewId}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
