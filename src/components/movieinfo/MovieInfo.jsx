@@ -1,10 +1,12 @@
 import { DivMovieInfoSection } from './style';
 import commentIcon from '../../image/comment.svg';
+import Heart from '../heart/Heart';
 
 export default function MovieInfo({ movieInfo, children, isSmall = false }) {
   const PERFECT_RATING = 5;
   const space = isSmall ? 0 : 15;
 
+  console.log(movieInfo)
   return (
     <DivMovieInfoSection
       isSmall={isSmall}
@@ -20,9 +22,9 @@ export default function MovieInfo({ movieInfo, children, isSmall = false }) {
           ★★★★★<span>★★★★★</span>
         </span>
         <span>|</span>
-        <span>❤ 1234</span> <span>|</span>{' '}
+        <span><Heart isLiked={movieInfo.heartYn} reviewId={movieInfo.reviewId} heartNum={movieInfo?.heartNum}/></span> <span>|</span>
         <span>
-          <img src={commentIcon} className='iconImg' /> 123
+          <img src={commentIcon} className='iconImg' /> {movieInfo?.commentNum}
         </span>
         <hr />
         <div style={{ height: space }}></div>

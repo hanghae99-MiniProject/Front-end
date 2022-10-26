@@ -7,7 +7,9 @@ export default function ReviewInfo({ review }){
     image: review.image,
     movieTitle: review.movieTitle,
     rating: review.rating,
-    genre: review.genre
+    genre: review.genre,
+    heartNum: review.heartNum,
+    commentNum: review.commentNum
   }
   console.log(review)
   return <MovieInfo movieInfo={movieInfo}>
