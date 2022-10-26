@@ -14,15 +14,16 @@ const DetailInfo = () => {
 
   const dispatch = useDispatch();
 
-  const searchMovies = useSelector((state) => state.writeSlice.searchMovies);
-  console.log(searchMovies);
+  const searchMovies = useSelector(
+    (state) => state?.writeSlice?.searchMovies.data
+  );
+  console.log('디테일', searchMovies);
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [updatedReview, setUpdatedReview] = useState({
     reviewTitle: '',
     reviewContent: '',
   });
-  console.log(searchMovies);
-  console.log(updatedReview);
 
   //input, textarea 입력값 변경
   const onChangeComment = (event) => {
@@ -44,7 +45,7 @@ const DetailInfo = () => {
   //삭제버튼
   const onDeleteHandler = () => {
     dispatch(deleteMoviesWriteThunk(id));
-    console.log(id);
+    console.log('삭제id', id);
   };
 
   //useEffect
@@ -54,8 +55,8 @@ const DetailInfo = () => {
 
   useEffect(() => {
     setUpdatedReview({
-      reviewTitle: searchMovies.reviewTitle,
-      reviewContent: searchMovies.reviewContent,
+      reviewTitle: searchMovies?.reviewTitle,
+      reviewContent: searchMovies?.reviewContent,
     });
   }, [searchMovies]);
   return (
@@ -83,9 +84,9 @@ const DetailInfo = () => {
         ) : (
           <div>
             리뷰제목:
-            <div>{searchMovies.reviewTitle}</div>
+            <div>{searchMovies?.reviewTitle}</div>
             리뷰내용:
-            <div>{searchMovies.reviewContent}</div>
+            <div>{searchMovies?.reviewContent}</div>
           </div>
         )}
       </ReviewContainer>
