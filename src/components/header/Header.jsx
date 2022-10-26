@@ -2,6 +2,7 @@ import { DivHeaderSection } from './style'
 import logo from '../../image/logo.png'
 import { useCookies } from 'react-cookie'
 import axios from 'axios';
+import { API_URL } from '../../shared/Request';
 
 export default function Header(){
   const [ cookie, setCookie, removeCookie ] = useCookies();
@@ -10,7 +11,7 @@ export default function Header(){
   const logout = () => {
     axios.defaults.headers.post['authorization'] = cookie.token;
     axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
-    axios.post('http://43.201.55.251:8080/api/member/logout')
+    axios.post(`${API_URL}/api/member/logout`)
     .then(res => {
       removeCookie('token')
       removeCookie('refreshtoken')
