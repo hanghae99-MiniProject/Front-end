@@ -1,26 +1,25 @@
 import styled from 'styled-components';
 
 export const CommentBox = styled.div`
-  background-color: black;
   width: 100%;
   height: 100%;
 `;
 
 export const CommentsDiv = styled.div`
-  width: 600px;
+  width: 800px;
   height: 400px;
   margin: auto;
 `;
 export const CommnetsInputBox = styled.form`
   border: 2px solid white;
   border-radius: 10px;
-  width: 600px;
+  width: 800px;
   height: 50px;
 `;
 
 export const Input = styled.input`
   border-radius: 4px;
-  width: 410px;
+  width: 550px;
   height: 18px;
   margin-left: 20px;
   margin-top: 13px;
@@ -30,7 +29,7 @@ export const InputBtn = styled.button`
   border-radius: 4px;
   margin-top: 13px;
   margin-right: 25px;
-  width: 70px;
+  width: 120px;
   height: 25px;
   float: right;
   margin-left: 10px;
@@ -41,6 +40,7 @@ export const InputBtn = styled.button`
 
 export const Btn = styled.button`
   margin-top: 4px;
+  width: 70px;
   border-radius: 4px;
   float: right;
   margin-right: 10px;
@@ -50,7 +50,7 @@ export const Btn = styled.button`
 
 export const CommentsBox = styled.div`
   border-bottom: 1px solid white;
-  width: 600px;
+  width: 800px;
   height: 30px;
 `;
 
@@ -74,7 +74,7 @@ export const CommentText = styled.div`
 export const IdText = styled.div`
   margin-top: 5px;
   font-weight: bold;
-  margin-left: 30px;
+  margin-left: 20px;
   float: left;
   color: white;
 `;
