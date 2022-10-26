@@ -11,18 +11,16 @@ export default function Header(){
   const logout = () => {
     axios.defaults.headers.post['authorization'] = cookie.token;
     axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
+    removeCookie('token')
+    removeCookie('refreshtoken')
+    
     axios.post(`${API_URL}/api/member/logout`)
     .then(res => {
-      removeCookie('token')
-      removeCookie('refreshtoken')
       if(res.data.success) alert(res.data.data)
       else alert(res.data.error.message)
       window.location.reload();
     }).catch(err => {
       alert('logout failed')
-      console.log(err)
-      removeCookie('token')
-      removeCookie('refreshtoken')
       window.location.reload();
     })
   }
