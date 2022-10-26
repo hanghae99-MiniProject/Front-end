@@ -16,9 +16,9 @@ import { useNavigate } from 'react-router-dom';
 const DetailInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.writeSlice); // ADD
-  const [ cookie, setCookie, removeCookie ] = useCookies();
+  const [cookie, setCookie, removeCookie] = useCookies();
 
   const searchMovies = useSelector(
     (state) => state?.writeSlice?.searchMovies.data
@@ -44,7 +44,7 @@ const DetailInfo = () => {
         reviewTitle: updatedReview.reviewTitle,
         reviewContent: updatedReview.reviewContent,
         authorization: cookie.token,
-        refreshtoken: cookie.refreshtoken        
+        refreshtoken: cookie.refreshtoken,
       })
     );
     setIsEditMode(false);
@@ -53,17 +53,23 @@ const DetailInfo = () => {
   //삭제버튼
   const onDeleteHandler = () => {
     dispatch(
-      deleteMoviesWriteThunk({reviewId: id,
+      deleteMoviesWriteThunk({
+        reviewId: id,
         authorization: cookie.token,
-        refreshtoken: cookie.refreshtoken
-      }));
+        refreshtoken: cookie.refreshtoken,
+      })
+    );
   };
 
   //useEffect
   useEffect(() => {
-    dispatch(getMoviesWriteThunk({reviewId: id,
-      authorization: cookie.token,
-      refreshtoken: cookie.refreshtoken}));
+    dispatch(
+      getMoviesWriteThunk({
+        reviewId: id,
+        authorization: cookie.token,
+        refreshtoken: cookie.refreshtoken,
+      })
+    );
   }, [dispatch]);
 
   useEffect(() => {
@@ -88,61 +94,60 @@ const DetailInfo = () => {
       <ReviewContainer>
         {isEditMode ? (
           <>
-            리뷰제목:
-            <input
+            <ReviewTitle>리뷰제목</ReviewTitle>
+            <ReviewInputTitle
               name='reviewTitle'
               value={updatedReview.reviewTitle}
               onChange={onChangeComment}
             />
-            리뷰내용:
-            <textarea
+            <ReviewTitle>리뷰내용</ReviewTitle>
+            <ReviewTextareaTitle
               name='reviewContent'
-              rows='10'
-              cols='50'
               maxLength={200}
+              readonly
               value={updatedReview.reviewContent}
               onChange={onChangeComment}
             />
           </>
         ) : (
           <div>
-            리뷰제목:
-            <div>{searchMovies?.reviewTitle}</div>
-            리뷰내용:
-            <div>{searchMovies?.reviewContent}</div>
+            <ReviewTitle>리뷰제목</ReviewTitle>
+            <ReviewContent>{searchMovies?.reviewTitle}</ReviewContent>
+            <ReviewTitle>리뷰내용</ReviewTitle>
+            <ReviewContent>{searchMovies?.reviewContent}</ReviewContent>
           </div>
         )}
       </ReviewContainer>
 
       <div>
         {isEditMode ? (
-          <div>
-            <button size='large' onClick={onSaveButtonHandler}>
+          <ReviewButtonContainer>
+            <ReviewButton size='large' onClick={onSaveButtonHandler}>
               저장
-            </button>
-            <button
+            </ReviewButton>
+            <ReviewButton
               size='large'
               onClick={() => {
                 setIsEditMode(false);
               }}
             >
               취소
-            </button>
-          </div>
+            </ReviewButton>
+          </ReviewButtonContainer>
         ) : (
-          <div style={{ textAlign: 'center' }}>
-            <button
+          <ReviewButtonContainer>
+            <ReviewButton
               size='large'
               onClick={() => {
                 setIsEditMode(true);
               }}
             >
               수정
-            </button>
-            <button size='large' onClick={onDeleteHandler}>
+            </ReviewButton>
+            <ReviewButton size='large' onClick={onDeleteHandler}>
               삭제
-            </button>
-          </div>
+            </ReviewButton>
+          </ReviewButtonContainer>
         )}
       </div>
       <Comment
@@ -156,17 +161,75 @@ const DetailInfo = () => {
 export default DetailInfo;
 
 const DetailContainer = styled.div`
-  background-color: blue;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  /* background-color: #0000b1; */
+
+  width: 800px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  padding: 0;
+  margin: 0;
 `;
 
 const ReviewContainer = styled.div`
-  background-color: purple;
-  width: 600px;
+  /* background-color: purple; */
+  width: 800px;
+  height: 500px;
   margin: 30px 0px 0px 30px;
+`;
+
+const ReviewTitle = styled.h3`
+  font-weight: bold;
+  padding: 0px 0px 10px 30px;
+  border: 0px;
+  border-bottom: 2px solid #6f6f6f;
+`;
+
+const ReviewContent = styled.div`
+  height: 50px;
+
+  padding: 10px 0px 10px 30px;
+
+  font-weight: bold;
+`;
+
+const ReviewInputTitle = styled.input`
+  width: 790px;
+  height: 30px;
+`;
+
+const ReviewTextareaTitle = styled.textarea`
+  width: 790px;
+  height: 300px;
+
+  /* overflow-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap; */
+`;
+
+const ReviewButtonContainer = styled.div`
+  width: 800px;
+  height: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ReviewButton = styled.button`
+  width: 150px;
+  height: 30px;
+  margin: 10px;
+
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  border: 3px solid #6f6f6f;
+  border-radius: 10px;
+  :hover {
+    background-color: rgba(255, 255, 255, 0.305);
+  }
 `;

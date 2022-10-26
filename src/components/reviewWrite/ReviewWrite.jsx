@@ -8,13 +8,12 @@ import Loading from '../loading/Loading';
 import { useCookies } from 'react-cookie';
 import { API_URL } from '../../shared/Request.jsx';
 
-
 const ReviewWrite = () => {
   const [cookie, setCookie, removeCookie] = useCookies();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [ isLoading, setIsLoading ] = useState(false);
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   const onClickHandler = (event) => {
     event.preventDefault();
 
@@ -41,33 +40,34 @@ const ReviewWrite = () => {
     //     refreshtoken: cookie.refreshtoken,
     //   })
     // );
-    setIsLoading(true)
+    setIsLoading(true);
     axios.defaults.headers.post['authorization'] = cookie.token;
     axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
-    axios.post(`${API_URL}/api/reviews`, {
-      image: data.image,
-      movieTitle: data.movieTitle,
-      rating: data.rating,
-      genre: data.genre,
-      reviewTitle: data.reviewTitle,
-      reviewContent: data.reviewContent,
-    })
-    .then(res => {
-      if(res.data.success) {
-        alert('리뷰가 작성되었습니다.');
-        navigate('/review');
-        setIsLoading(false)
-      } else {
+    axios
+      .post(`${API_URL}/api/reviews`, {
+        image: data.image,
+        movieTitle: data.movieTitle,
+        rating: data.rating,
+        genre: data.genre,
+        reviewTitle: data.reviewTitle,
+        reviewContent: data.reviewContent,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          alert('리뷰가 작성되었습니다.');
+          navigate('/review');
+          setIsLoading(false);
+        } else {
+          alert('작성에 실패하였습니다.');
+          navigate('/review');
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
         alert('작성에 실패하였습니다.');
         navigate('/review');
-        setIsLoading(false)
-      }
-    })
-    .catch(err => {
-      alert('작성에 실패하였습니다.');
-      navigate('/review');
-      setIsLoading(false)
-    })
+        setIsLoading(false);
+      });
 
     setData({
       image: '',
@@ -77,8 +77,6 @@ const ReviewWrite = () => {
       reviewTitle: '',
       reviewContent: '',
     });
-
-    
   };
 
   const [data, setData] = useState({
@@ -95,8 +93,8 @@ const ReviewWrite = () => {
     setData({ ...data, [name]: value });
   };
 
-  if(isLoading) return <Loading />
-  
+  if (isLoading) return <Loading />;
+
   return (
     <WriteFrom onSubmit={onClickHandler}>
       <WriteFormContainer>
@@ -170,7 +168,7 @@ export default ReviewWrite;
 
 // 전체 Form
 const WriteFrom = styled.form`
-  background-color: #ffffff;
+  background-color: #212223;
 
   width: 1000px;
   height: 900px;
@@ -187,14 +185,14 @@ const WriteFrom = styled.form`
 const MovieInfoTitle = styled.div`
   margin: 0px 0px 0px 90px;
 
-  color: black;
+  color: white;
   font-weight: bold;
 `;
 
 // 하위제목
 const WriteTitle = styled.h1`
   /* background-color: skyblue; */
-  color: black;
+  color: white;
   margin-left: 110px;
 `;
 
