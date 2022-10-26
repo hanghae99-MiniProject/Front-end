@@ -12,9 +12,9 @@ export default function ReviewInfo({ review }){
     commentNum: review.commentNum
   }
   console.log(review)
-  return <MovieInfo movieInfo={movieInfo}>
+  return <MovieInfo movieInfo={review}>
     <h3>{review.reviewTitle}</h3>
     <P>{review.reviewContent}</P> 
-    <A href={`/detail/${review.id}`}>더보기</A>
+    <A href={`/detail/${review.reviewId}`}>더보기</A>
     </MovieInfo>
 }
