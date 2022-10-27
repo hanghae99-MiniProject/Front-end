@@ -11,8 +11,9 @@ import { useCookies } from 'react-cookie';
 export default function Review(){
 
   const dispatch = useDispatch();
-  const { isLoading, error, searchMovies } = useSelector(state => state.writeSlice);
   const [ cookie, setCookie, removeCookie ] = useCookies();
+  const { isLoading, error, searchMovies } = useSelector(state => state.writeSlice);
+  
 
   useEffect(() => {
     dispatch(getReviewsThunk({'token':cookie.token, 'refresh-token':cookie.refreshtoken}));
@@ -21,8 +22,8 @@ export default function Review(){
   if(isLoading || searchMovies.length <= 0)
     return <Loading />
 
-  if(error)
-    return <h1>Error</h1>
+  // if(error)
+    // return <h1>Error</h1>
 
   return <>
         <ReviewList width='100%' reviews={searchMovies.data} />
