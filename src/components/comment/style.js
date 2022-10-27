@@ -78,3 +78,10 @@ export const IdText = styled.div`
   float: left;
   color: white;
 `;
+
+export const CommentsInput = styled.input`
+  /* background-color: blue; */
+
+  width: 540px;
+  margin: 5px 0px 0px 25px;
+`;

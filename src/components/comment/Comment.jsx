@@ -13,6 +13,7 @@ import {
   InputText,
   CommentText,
   CommentBox,
+  CommentsInput,
 } from './style';
 import { Input } from './style';
 import axios from 'axios';
@@ -53,62 +54,89 @@ export default function Comment({ reviewId, commentList }) {
           }}
         >
           <InputText>댓글</InputText>
-          <Input type="text" onChange={onChangeHandler} />
+          <Input type='text' onChange={onChangeHandler} />
           <InputBtn>확인</InputBtn>
         </CommnetsInputBox>
-          {comments.map((comment) => <CommentLine reviewId={reviewId} content={comment} key={comment.commentId}/>)}
-
+        {comments.map((comment) => (
+          <CommentLine
+            reviewId={reviewId}
+            content={comment}
+            key={comment.commentId}
+          />
+        ))}
       </CommentsDiv>
     </CommentBox>
   );
 }
 
-const CommentLine = ({reviewId, content}) => {
-  const [ cookie, setCookie, removeCookie ] = useCookies();
-  const [ isEdit, setIsEdit ] = useState(false);
-  const [ editComment, editCommentHandler ] = useInput();
+const CommentLine = ({ reviewId, content }) => {
+  const [cookie, setCookie, removeCookie] = useCookies();
+  const [isEdit, setIsEdit] = useState(false);
+  const [editComment, editCommentHandler] = useInput();
 
   const deleteOnClickHandler = () => {
     axios.defaults.headers.delete['authorization'] = cookie.token;
     axios.defaults.headers.delete['refresh-token'] = cookie.refreshtoken;
-    axios.delete(`${API_URL}/api/comment/${content.commentId}`)
-    .then(res => {
-      if(res.data.success){
+    axios.delete(`${API_URL}/api/comment/${content.commentId}`).then((res) => {
+      if (res.data.success) {
         alert('삭제되었습니다.');
       } else {
         alert(res.data.error.message);
       }
       window.location.reload();
-    })
+    });
   };
 
   const saveOnClickHandler = () => {
     axios.defaults.headers.put['authorization'] = cookie.token;
     axios.defaults.headers.put['refresh-token'] = cookie.refreshtoken;
-    axios.put(`${API_URL}/api/comments/${content.commentId}`, {
-      reviewId: reviewId,
-      comment: editComment
-    })
-    .then(res => {
-      if(res.data.success){
-        alert('수정되었습니다.');
-      } else {
-        alert(res.data.error.message)
-      }
-      window.location.reload();
-    })
-  }
+    axios
+      .put(`${API_URL}/api/comments/${content.commentId}`, {
+        reviewId: reviewId,
+        comment: editComment,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          alert('수정되었습니다.');
+        } else {
+          alert(res.data.error.message);
+        }
+        window.location.reload();
+      });
+  };
 
-  if(localStorage.getItem('memberName') === content.memberName) {
-    return <CommentsBox>
-    <IdText>{content.memberName}</IdText>
-    { isEdit ? <input type='text' defaultValue={content.comment} onChange={editCommentHandler} /> : <CommentText>{content.comment}</CommentText> }
-    { isEdit ? <Btn onClick={saveOnClickHandler}>저장</Btn> : <Btn onClick={() => {setIsEdit(true)}}>수정</Btn>}
-    <Btn onClick={deleteOnClickHandler}> 삭제 </Btn>
-</CommentsBox>
+  if (localStorage.getItem('memberName') === content.memberName) {
+    return (
+      <CommentsBox>
+        <IdText>{content.memberName}</IdText>
+        {isEdit ? (
+          <CommentsInput
+            type='text'
+            defaultValue={content.comment}
+            onChange={editCommentHandler}
+          />
+        ) : (
+          <CommentText>{content.comment}</CommentText>
+        )}
+        {isEdit ? (
+          <Btn onClick={saveOnClickHandler}>저장</Btn>
+        ) : (
+          <Btn
+            onClick={() => {
+              setIsEdit(true);
+            }}
+          >
+            수정
+          </Btn>
+        )}
+        <Btn onClick={deleteOnClickHandler}> 삭제 </Btn>
+      </CommentsBox>
+    );
   }
-  return <CommentsBox>
+  return (
+    <CommentsBox>
       <IdText>{content.memberName}</IdText>
       <CommentText>{content.comment}</CommentText>
-  </CommentsBox>
-}
+    </CommentsBox>
+  );
+};
