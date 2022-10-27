@@ -41,8 +41,8 @@ export default function LoginForm(){
     .then((res) => {
       if(res.data.success){
         console.log(res.data.data.memberName)
-        setCookie('token', res.request.getResponseHeader('authorization'));
-        setCookie('refreshtoken', res.request.getResponseHeader('refresh-token'));
+        setCookie('token', res.request.getResponseHeader('authorization'), {path: '/'});
+        setCookie('refreshtoken', res.request.getResponseHeader('refresh-token'), {path: '/'});
         localStorage.setItem('memberName', res.data.data.memberName);
         navigate('/');
       } else {
