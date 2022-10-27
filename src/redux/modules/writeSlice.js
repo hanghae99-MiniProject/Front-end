@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_URL } from '../../shared/Request.jsx';
 //http://week3-board.herokuapp.com/review/
@@ -11,7 +11,9 @@ export const getMoviesWriteThunk = createAsyncThunk(
     try {
       axios.defaults.headers.get['authorization'] = payload.authorization;
       axios.defaults.headers.get['refresh-token'] = payload.refreshtoken;
-      const { data } = await axios.get(`${API_URL}/api/reviews/${payload.reviewId}`);
+      const { data } = await axios.get(
+        `${API_URL}/api/reviews/${payload.reviewId}`
+      );
 
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
@@ -50,7 +52,7 @@ export const updateMoviesWriteThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     axios.defaults.headers.put['authorization'] = payload.authorization;
     axios.defaults.headers.put['refresh-token'] = payload.refreshtoken;
-    console.log(payload)
+    console.log(payload);
     try {
       const data = await axios.put(
         `${API_URL}/api/reviews/${payload.reviewId}`,
@@ -68,12 +70,14 @@ export const updateMoviesWriteThunk = createAsyncThunk(
 export const deleteMoviesWriteThunk = createAsyncThunk(
   'DELETE_MOVIES',
   async (payload, thunkAPI) => {
-    console.log(payload)
+    console.log('payload', payload);
     axios.defaults.headers.delete['authorization'] = payload.authorization;
     axios.defaults.headers.delete['refresh-token'] = payload.refreshtoken;
-    console.log(payload.reviewId)
+
+    const name = payload.reviewId;
+    console.log('payloadId', name);
     try {
-      await axios.delete(`${API_URL}/api/reviews/${payload.reviewId}`);
+      await axios.delete(`${API_URL}/api/reviews/${name}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
@@ -147,12 +151,20 @@ const writeSlice = createSlice({
 
     //delete
     [deleteMoviesWriteThunk.fulfilled]: (state, action) => {
-      console.log(action);
-      const target = state.searchMovies.findIndex(
-        (data) => data.id === action.payload
+      console.log('deletestate', current(state.searchMovies));
+      console.log('deleteaction', action.payload.reviewId);
+      state.isLoading = false;
+
+      const target = state?.searchMovies?.data.findIndex(
+        (data) => data.reviewId === action.payload.reviewId
+        // (data) => {
+        //   console.log('data', data);
+        // }
+        // (data) => console.log('data', data)
       );
-      state.searchMovies.splice(target, 1, action.payload);
-      console.log(action.payload);
+
+      // const target = state.searchMovies.data.reviewId;
+      state?.searchMovies?.data.splice(target, 1);
     },
     [deleteMoviesWriteThunk.pending]: (state) => {
       state.isLoading = true;
