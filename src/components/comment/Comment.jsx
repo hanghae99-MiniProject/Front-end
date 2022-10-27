@@ -18,6 +18,7 @@ import {
 import { Input } from './style';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 // component data => dispatch => 미들웨어 =>  reducer => store에 저장
 
 export default function Comment({ reviewId, commentList }) {
@@ -31,8 +32,12 @@ export default function Comment({ reviewId, commentList }) {
   const onChangeHandler = (e) => {
     setState(e.target.value);
   };
-
+  const navigate = useNavigate();
   const onSubmitHandler = () => {
+    if (!cookie.token || !cookie.refreshtoken) {
+      alert('로그인 해주세요.');
+      navigate('/login');
+    }
     if (state.trim().length <= 0) {
       alert('댓글을 작성해주세요.');
       return;
