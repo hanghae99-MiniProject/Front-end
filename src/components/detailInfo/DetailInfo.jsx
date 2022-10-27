@@ -13,8 +13,8 @@ import Comment from '../comment/Comment';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-// import axios from 'axios';
-// import { API_URL } from '../../shared/Request.jsx';
+import axios from 'axios';
+import { API_URL } from '../../shared/Request.jsx';
 
 const DetailInfo = () => {
   const { id } = useParams();
@@ -43,7 +43,8 @@ const DetailInfo = () => {
   const onSaveButtonHandler = () => {
     dispatch(
       updateMoviesWriteThunk({
-        ...searchMovies,
+        // ...searchMovies,
+        reviewId: searchMovies.reviewId,
         reviewTitle: updatedReview.reviewTitle,
         reviewContent: updatedReview.reviewContent,
         authorization: cookie.token,
@@ -55,23 +56,24 @@ const DetailInfo = () => {
   };
   //삭제버튼
   const onDeleteHandler = () => {
-    dispatch(
-      deleteMoviesWriteThunk({
-        reviewId: id,
-        authorization: cookie.token,
-        refreshtoken: cookie.refreshtoken,
-      })
-    );
-    // axios.defaults.headers.delete['authorization'] = cookie.token;
-    // axios.defaults.headers.delete['refresh-token'] = cookie.refreshtoken;
-    // axios.delete(`${API_URL}/api/reviews/${id}`).then((res) => {
-    //   if (res.data.success) {
-    //     alert('삭제되었습니다.');
-    //   } else {
-    //     alert(res.data.error.message);
-    //   }
-    //   window.location.reload();
-    // });
+    // dispatch(
+    //   deleteMoviesWriteThunk({
+    //     reviewId: id,
+    //     authorization: cookie.token,
+    //     refreshtoken: cookie.refreshtoken,
+    //   })
+    // );
+    axios.defaults.headers.delete['authorization'] = cookie.token;
+    axios.defaults.headers.delete['refresh-token'] = cookie.refreshtoken;
+    axios.delete(`${API_URL}/api/reviews/${id}`).then((res) => {
+      if (res.data.success) {
+        alert('삭제되었습니다.');
+      } else {
+        alert(res.data.error.message);
+      }
+      navigate('/review');
+      window.location.reload();
+    });
   };
 
   //useEffect
@@ -91,8 +93,6 @@ const DetailInfo = () => {
       reviewContent: searchMovies?.reviewContent,
     });
   }, [searchMovies]);
-
-  console.log(searchMovies);
 
   if (isLoading || !searchMovies) {
     return <Loading />;
@@ -142,6 +142,7 @@ const DetailInfo = () => {
       </>
     );
   }
+
   return (
     <DetailContainer>
       <MovieInfo movieInfo={searchMovies} isSmall={true} />
