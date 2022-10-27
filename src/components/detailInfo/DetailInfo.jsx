@@ -13,6 +13,9 @@ import Comment from '../comment/Comment';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
+import axios from 'axios';
+import { API_URL } from '../../shared/Request.jsx';
+
 const DetailInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -53,13 +56,24 @@ const DetailInfo = () => {
   };
   //삭제버튼
   const onDeleteHandler = () => {
-    dispatch(
-      deleteMoviesWriteThunk({
-        reviewId: id,
-        authorization: cookie.token,
-        refreshtoken: cookie.refreshtoken,
-      })
-    );
+    // dispatch(
+    //   deleteMoviesWriteThunk({
+    //     reviewId: id,
+    //     authorization: cookie.token,
+    //     refreshtoken: cookie.refreshtoken,
+    //   })
+    // );
+    axios.defaults.headers.delete['authorization'] = cookie.token;
+    axios.defaults.headers.delete['refresh-token'] = cookie.refreshtoken;
+    axios.delete(`${API_URL}/api/reviews/${id}`).then((res) => {
+      if (res.data.success) {
+        alert('삭제되었습니다.');
+      } else {
+        alert(res.data.error.message);
+      }
+      navigate('/review');
+      window.location.reload();
+    });
   };
 
   //useEffect
@@ -79,7 +93,7 @@ const DetailInfo = () => {
       reviewContent: searchMovies?.reviewContent,
     });
   }, [searchMovies]);
-  
+
   if (isLoading || !searchMovies) {
     return <Loading />;
   }
@@ -87,46 +101,48 @@ const DetailInfo = () => {
     alert(error);
     return <Loading />;
   }
-  
-  if(localStorage.getItem('memberName') !== searchMovies.memberName) {
-    return <>
-     <DetailContainer>
-      <MovieInfo movieInfo={searchMovies} isSmall={true} />
-      <ReviewContainer>
-        {isEditMode ? (
-          <>
-            <ReviewTitle>리뷰제목</ReviewTitle>
-            <ReviewInputTitle
-              name='reviewTitle'
-              value={updatedReview.reviewTitle}
-              onChange={onChangeComment}
-            />
-            <ReviewTitle>리뷰내용</ReviewTitle>
-            <ReviewTextareaTitle
-              name='reviewContent'
-              maxLength={200}
-              readonly
-              value={updatedReview.reviewContent}
-              onChange={onChangeComment}
-            />
-          </>
-        ) : (
-          <div>
-            <ReviewTitle>리뷰제목</ReviewTitle>
-            <ReviewContent>{searchMovies?.reviewTitle}</ReviewContent>
-            <ReviewTitle>리뷰내용</ReviewTitle>
-            <ReviewContent>{searchMovies?.reviewContent}</ReviewContent>
-          </div>
-        )}
-      </ReviewContainer>
-      <Comment
-        reviewId={searchMovies.reviewId}
-        commentList={searchMovies.commentResponseDtoList}
-      />
-    </DetailContainer>
-    </>
+
+  if (localStorage.getItem('memberName') !== searchMovies.memberName) {
+    return (
+      <>
+        <DetailContainer>
+          <MovieInfo movieInfo={searchMovies} isSmall={true} />
+          <ReviewContainer>
+            {isEditMode ? (
+              <>
+                <ReviewTitle>리뷰제목</ReviewTitle>
+                <ReviewInputTitle
+                  name='reviewTitle'
+                  value={updatedReview.reviewTitle}
+                  onChange={onChangeComment}
+                />
+                <ReviewTitle>리뷰내용</ReviewTitle>
+                <ReviewTextareaTitle
+                  name='reviewContent'
+                  maxLength={200}
+                  readonly
+                  value={updatedReview.reviewContent}
+                  onChange={onChangeComment}
+                />
+              </>
+            ) : (
+              <div>
+                <ReviewTitle>리뷰제목</ReviewTitle>
+                <ReviewContent>{searchMovies?.reviewTitle}</ReviewContent>
+                <ReviewTitle>리뷰내용</ReviewTitle>
+                <ReviewContent>{searchMovies?.reviewContent}</ReviewContent>
+              </div>
+            )}
+          </ReviewContainer>
+          <Comment
+            reviewId={searchMovies.reviewId}
+            commentList={searchMovies.commentResponseDtoList}
+          />
+        </DetailContainer>
+      </>
+    );
   }
-  
+
   return (
     <DetailContainer>
       <MovieInfo movieInfo={searchMovies} isSmall={true} />
