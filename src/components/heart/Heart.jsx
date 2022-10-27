@@ -28,11 +28,11 @@ export default function Heart({isLiked, reviewId, heartNum}){
         if(res.data.data){
           // Heart 누름
           setLike(true)
-          setHeartCount(heartNum + 1)
+          setHeartCount(heartCount + 1)
         } else {
           //Heart 취소
           setLike(false)
-          setHeartCount(heartNum)
+          setHeartCount(heartCount - 1)
         }
       } else {
         alert('좋아요에 실패했습니다.')
