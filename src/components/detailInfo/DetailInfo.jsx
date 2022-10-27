@@ -40,7 +40,8 @@ const DetailInfo = () => {
   const onSaveButtonHandler = () => {
     dispatch(
       updateMoviesWriteThunk({
-        ...searchMovies,
+        // ...searchMovies,
+        reviewId: searchMovies.reviewId,
         reviewTitle: updatedReview.reviewTitle,
         reviewContent: updatedReview.reviewContent,
         authorization: cookie.token,
@@ -78,8 +79,6 @@ const DetailInfo = () => {
       reviewContent: searchMovies?.reviewContent,
     });
   }, [searchMovies]);
-
-  console.log(searchMovies)
   
   if (isLoading || !searchMovies) {
     return <Loading />;
@@ -127,6 +126,7 @@ const DetailInfo = () => {
     </DetailContainer>
     </>
   }
+  
   return (
     <DetailContainer>
       <MovieInfo movieInfo={searchMovies} isSmall={true} />
