@@ -65,7 +65,7 @@ const ReviewWrite = () => {
       })
       .catch((err) => {
         alert('작성에 실패하였습니다.');
-        navigate('/review');
+        navigate('/reivew');
         setIsLoading(false);
       });
 
@@ -154,7 +154,7 @@ const ReviewWrite = () => {
         <WriteSaveButton>글쓰기</WriteSaveButton>
         <WriteCloseButton
           onClick={() => {
-            navigate('/reivew');
+            navigate('/review');
           }}
         >
           취소

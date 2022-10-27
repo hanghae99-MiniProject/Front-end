@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie'
 import axios from 'axios';
 import { API_URL } from '../../shared/Request';
 import { useEffect } from 'react'
+import DropDownMenu from '../dropdownmenu/DropDownMenu';
 
 export default function Header(){
   const [ cookie, setCookie, removeCookie ] = useCookies();
@@ -28,16 +29,18 @@ export default function Header(){
     })
   }
 
+  
   useEffect(() => {
     return console.log('OK Bye')
   }, [])
+  const menus = [{onclick: logout, title: 'Logout'}]
 
-  
   return <DivHeaderSection>
+          
           <div className="headerWrap">
             <div className='logoBox'><a href='/'><img src={logo} className='logo' /></a></div>
             <div className='menuBox'><a href='/review'><h2>Review</h2></a></div>
-            <div className='loginBox'>{isLogin ? <a href='#' onClick={logout}><h2>Logout</h2></a> : <a href='/login'><h2>Login</h2></a>}</div>
+            <div className='loginBox'>{isLogin ? <DropDownMenu menus={menus}><h2>{localStorage.getItem('memberName')}</h2></DropDownMenu> : <a href='/login'><h2>Login</h2></a>}</div>
           </div>
          </DivHeaderSection>
 }
