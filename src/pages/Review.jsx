@@ -20,10 +20,7 @@ export default function Review(){
 
   if(isLoading || searchMovies.length <= 0)
     return <Loading />
-
-  if(error)
-    return <h1>Error</h1>
-
+    
   return <>
         <ReviewList width='100%' reviews={searchMovies.data} />
         <ButtonWrite />
