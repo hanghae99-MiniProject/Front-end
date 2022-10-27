@@ -79,7 +79,8 @@ const DetailInfo = () => {
     });
   }, [searchMovies]);
 
-  // ADD ---
+  console.log(searchMovies)
+  
   if (isLoading || !searchMovies) {
     return <Loading />;
   }
@@ -87,7 +88,45 @@ const DetailInfo = () => {
     alert(error);
     return <Loading />;
   }
-  // ------
+  
+  if(localStorage.getItem('memberName') !== searchMovies.memberName) {
+    return <>
+     <DetailContainer>
+      <MovieInfo movieInfo={searchMovies} isSmall={true} />
+      <ReviewContainer>
+        {isEditMode ? (
+          <>
+            <ReviewTitle>리뷰제목</ReviewTitle>
+            <ReviewInputTitle
+              name='reviewTitle'
+              value={updatedReview.reviewTitle}
+              onChange={onChangeComment}
+            />
+            <ReviewTitle>리뷰내용</ReviewTitle>
+            <ReviewTextareaTitle
+              name='reviewContent'
+              maxLength={200}
+              readonly
+              value={updatedReview.reviewContent}
+              onChange={onChangeComment}
+            />
+          </>
+        ) : (
+          <div>
+            <ReviewTitle>리뷰제목</ReviewTitle>
+            <ReviewContent>{searchMovies?.reviewTitle}</ReviewContent>
+            <ReviewTitle>리뷰내용</ReviewTitle>
+            <ReviewContent>{searchMovies?.reviewContent}</ReviewContent>
+          </div>
+        )}
+      </ReviewContainer>
+      <Comment
+        reviewId={searchMovies.reviewId}
+        commentList={searchMovies.commentResponseDtoList}
+      />
+    </DetailContainer>
+    </>
+  }
   return (
     <DetailContainer>
       <MovieInfo movieInfo={searchMovies} isSmall={true} />

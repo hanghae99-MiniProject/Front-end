@@ -3,16 +3,19 @@ import logo from '../../image/logo.png'
 import { useCookies } from 'react-cookie'
 import axios from 'axios';
 import { API_URL } from '../../shared/Request';
+import { useEffect } from 'react'
 
 export default function Header(){
   const [ cookie, setCookie, removeCookie ] = useCookies();
-  const isLogin = cookie.token
+  const isLogin = cookie.token;
+  
 
   const logout = () => {
     axios.defaults.headers.post['authorization'] = cookie.token;
     axios.defaults.headers.post['refresh-token'] = cookie.refreshtoken;
-    removeCookie('token')
-    removeCookie('refreshtoken')
+    localStorage.removeItem('memberName')
+    removeCookie('token', {path: '/'})
+    removeCookie('refreshtoken', {path: '/'})
     
     axios.post(`${API_URL}/api/member/logout`)
     .then(res => {
@@ -24,6 +27,11 @@ export default function Header(){
       window.location.reload();
     })
   }
+
+  useEffect(() => {
+    return console.log('OK Bye')
+  }, [])
+
   
   return <DivHeaderSection>
           <div className="headerWrap">
