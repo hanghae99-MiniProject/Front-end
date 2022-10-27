@@ -65,7 +65,7 @@ const ReviewWrite = () => {
       })
       .catch((err) => {
         alert('작성에 실패하였습니다.');
-        navigate('/reivew');
+        navigate('/review');
         setIsLoading(false);
       });
 
