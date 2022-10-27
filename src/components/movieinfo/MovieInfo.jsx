@@ -6,13 +6,16 @@ export default function MovieInfo({ movieInfo, children, isSmall = false }) {
   const PERFECT_RATING = 5;
   const space = isSmall ? 0 : 15;
 
-  console.log(movieInfo)
+  const posterClickHandler = () => {
+    window.open(movieInfo?.image, movieInfo?.movieTitle, 'location = no, toolbars = no, status = no')
+  }
+
   return (
     <DivMovieInfoSection
       isSmall={isSmall}
       star={(movieInfo?.rating / PERFECT_RATING) * 100 + '%'}
     >
-      <img src={movieInfo?.image} className='posterImg' />
+      <img src={movieInfo?.image} className='posterImg' onClick={posterClickHandler}/>
 
       <div className='moveInfoWrap'>
         <h2>{movieInfo?.movieTitle}</h2>
