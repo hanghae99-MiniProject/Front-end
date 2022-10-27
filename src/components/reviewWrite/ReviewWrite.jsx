@@ -175,10 +175,14 @@ const WriteFrom = styled.form`
 
   border-radius: 10%;
 
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  padding: 0;
+  margin: 0;
 `;
 
 // 큰제목
@@ -271,12 +275,12 @@ const WriteSaveButton = styled.button`
 
   border: 0px;
   border-radius: 5px;
-  background-color: black;
+  background-color: #ffffff;
 
-  color: white;
+  color: black;
 
   :hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.01);
     cursor: pointer;
   }
 `;

@@ -205,6 +205,7 @@ const ReviewTextareaTitle = styled.textarea`
   width: 790px;
   height: 300px;
 
+  white-space: pre-wrap;
   /* overflow-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap; */
